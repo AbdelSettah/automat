@@ -39,6 +39,7 @@ public class AutomatServiceImpl implements AutomatService {
         if (differenz<0){
             throw new BetragZuNiedrigException("Die eingeworfenen Münzen reichen für den Einkauf nicht aus!");
         }
+        automat.addiereMuenzen(einzahlungen);
         MuenzenBuendel muenzenBuendel = geldRechner.rechneWechselGeld(differenz);
         getraenkAnfrage.setMuenzenBuendel(muenzenBuendel);
         automat.aktualisiereBestand(getraenkAnfrage);

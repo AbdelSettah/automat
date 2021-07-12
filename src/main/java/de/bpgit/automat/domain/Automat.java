@@ -3,6 +3,7 @@ package de.bpgit.automat.domain;
 import de.bpgit.automat.exceptions.KeinPassendesWechselGeldException;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,10 @@ public class Automat {
 
     private List<Muenze> geldBestand;
     private List<Getraenk> getraenke;
+
+    public Automat(){
+        geldBestand = new ArrayList<>();
+    }
 
     /**
      * @author Abdel
@@ -61,5 +66,9 @@ public class Automat {
                 throw new KeinPassendesWechselGeldException("Es gibt kein passendes Geldstück vorhanden!");
             }
         }
+    }
+
+    public void addiereMuenzen(Muenze ... einzahlungen) {
+        getGeldBestand().addAll(List.of(einzahlungen));
     }
 }

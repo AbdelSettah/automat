@@ -14,6 +14,7 @@ import de.bpgit.automat.service.AutomatServiceImpl;
 import de.bpgit.automat.testdata.TestDataBuilder;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,10 +79,15 @@ public class AutomatServiceImplTest {
 	@Test
 	void whenKaufKeinPassendesWechselGeldWerfeExceptionAuf() {
 		automatService.geldEntleeren();
-		automatService.geldFuellen(Arrays.asList(Muenze.EIN_EURO,Muenze.FUENFZIG_CENT));
+		automatService.geldFuellen(new ArrayList<>(Arrays.asList(Muenze.EIN_EURO,Muenze.FUENFZIG_CENT)));
 		int testPreis = 190;
 		Getraenk getraenkZukaufen = automatService.getAutomat().getGetraenke().stream().filter(g->g.getPreis()==testPreis).findAny().orElseThrow();
 		Assertions.assertThrows(KeinPassendesWechselGeldException.class, () -> automatService.kaufen(getraenkZukaufen,Muenze.ZWEI_EURO));
+		automatService.geldEntleeren();
+		automatService.geldFuellen(new ArrayList<>(Arrays.asList(Muenze.ZWANZIG_CENT,Muenze.FUENFZIG_CENT,Muenze.EIN_EURO)));
+		int testPreis2 = 130;
+		Getraenk getraenkZukaufen2 = automatService.getAutomat().getGetraenke().stream().filter(g->g.getPreis()==testPreis2).findAny().orElseThrow();
+		Assertions.assertThrows(KeinPassendesWechselGeldException.class, () -> automatService.kaufen(getraenkZukaufen2,Muenze.ZWEI_EURO,Muenze.FUENFZIG_CENT,Muenze.ZWANZIG_CENT,Muenze.ZWANZIG_CENT));
 	}
 
 	@Test
